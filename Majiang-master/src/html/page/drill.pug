@@ -1,0 +1,55 @@
+- var page = 'drill'
+doctype html
+html(lang="zh-CN")
+  
+  head
+    include ../inc/meta
+
+    include ../inc/ogp
+    +ogp('电脑麻将: 点数计算练习', '练习点数计算')
+
+    include ../inc/style
+    include ../inc/script
+
+  body.demo
+    include ../inc/loaderr
+    include ../inc/navi
+    include ../inc/loaddata
+    include ../inc/resize
+    .version ver. #{version}
+
+    div 规则:
+      select(name="rule")
+        option(value="") 电脑麻将规则
+    hr
+
+    .drill.hide
+      .exam
+        .stat
+        span.zhuangfeng
+        | 场 
+        span.menfeng
+        | 家 
+        img.lizhi.hide(src="img/1000.gif" alt="立直")
+
+        .shan.baopai
+          span.baopai
+        .shan.fubaopai
+          span.fubaopai
+    
+        .shoupai
+          .bingpai
+          .fulou
+      
+        hr
+        .button
+          button 显示答案
+        .answer
+          button.right ○ 正确
+          button.miss  × 错误
+          .defen
+          .hupai
+
+      .break
+        .stat
+        button 继续

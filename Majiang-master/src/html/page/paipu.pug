@@ -1,0 +1,24 @@
+- var page = 'paipu'
+
+doctype html
+html(lang="zh-CN")
+  
+  head
+    include ../inc/meta
+
+    include ../inc/ogp
+    +ogp('电脑麻将: 牌谱查看器', '回放电脑麻将格式或天凤牌谱')
+
+    include ../inc/style
+    include ../inc/script
+  
+  body.file
+    include ../inc/loaderr
+    include ../inc/navi
+    include ../inc/loaddata
+
+    include ../inc/file
+    include ../inc/stat
+    include ../inc/editor
+    include ../inc/board
+    .version ver. #{version}

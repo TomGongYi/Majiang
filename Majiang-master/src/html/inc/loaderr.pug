@@ -1,0 +1,12 @@
+#loaderr(style="display: none")
+  p
+    | 程序加载时发生错误。
+    | 当前浏览器可能无法运行本应用。
+    | 如果刷新后仍无法解决问题，
+    | 请尝试使用 Google Chrome 等最新版浏览器访问。
+  
+  script.
+    window.onload = function(){
+      var elem = document.getElementById('loaderr');
+      if (typeof Majiang === 'undefined') elem.removeAttribute('style');
+    }

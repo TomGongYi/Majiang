@@ -1,0 +1,38 @@
+- var page = 'paiga'
+doctype html
+html(lang="zh-CN")
+  
+  head
+    include ../inc/meta
+
+    include ../inc/ogp
+    +ogp('电脑麻将: 牌图输入', '用简单记法输入牌图')
+
+    include ../inc/style
+    include ../inc/script
+
+  body.demo
+    include ../inc/loaderr
+    include ../inc/navi
+    include ../inc/resize
+    .version ver. #{version}
+
+    form
+      textarea.paiga(name="text" rows="10")
+      br
+      label
+        input(name="size" type="radio" value="24x32" checked)
+        | 大(24x32) 
+      label
+        input(name="size" type="radio" value="19x25")
+        | 中(18x24) 
+      label
+        input(name="size" type="radio" value="16x21")
+        | 小(15x20) 
+      input(type="submit" value="转换")
+      input(type="reset" value="清空")
+    hr
+    
+    .paiga
+      div
+      textarea.paiga(rows="20")

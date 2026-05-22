@@ -1,0 +1,18 @@
+#room
+  h1
+    img(src="img/logo.png" alt="电脑麻将")
+    |  联网对战
+  .version ver. #{version}
+  
+  form
+    | 房间
+    input(name="room_no" value="" disabled)
+    ul.room
+      li.user
+        img(src="img/icon.png")
+        span.name
+        input.hide(type="button" name="quit" value="退出房间")
+    select(name="rule")
+      option(value="") 电脑麻将规则
+    input(name="timer" placeholder="持有时间")
+    input(type="submit" value="开始对局")

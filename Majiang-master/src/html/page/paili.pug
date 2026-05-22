@@ -1,0 +1,39 @@
+- var page = 'paili'
+doctype html
+html(lang="zh-CN")
+  
+  head
+    include ../inc/meta
+
+    include ../inc/ogp
+    +ogp('电脑麻将: 牌理', '显示向听数、有效牌及其枚数')
+
+    include ../inc/style
+    include ../inc/script
+
+  body.demo
+    include ../inc/loaderr
+    include ../inc/navi
+    include ../inc/loaddata
+    include ../inc/resize
+    .version ver. #{version}
+    
+    form
+      input(type="button" value="新建")
+      | | 手牌
+      input(type="text" name="paistr")
+      input(type="submit" value="选择")
+      input(type="reset" value="清空")
+    hr
+
+    .he
+      .lizhi
+        img.chouma.hide(src="img/1000.gif")
+      .dapai
+
+    .shoupai
+      .bingpai
+      .fulou
+    
+    .status
+    .paili

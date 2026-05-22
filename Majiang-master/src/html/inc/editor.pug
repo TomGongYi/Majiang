@@ -1,0 +1,183 @@
+#editor
+  .menu
+    h1
+      img(src="img/logo.png" alt="电脑麻将")
+      div 牌谱编辑器
+    .version ver. #{version}
+
+    .title
+
+    .score
+      select(name="game")
+        option 东一局
+      .jicun
+        label
+          img.chouma(src="img/100.gif" alt="本场")
+          | : 
+          input(name="changbang")
+        label
+          img.chouma(src="img/1000.gif" alt="供托")
+          | : 
+          input(name="lizhibang")
+      .shan
+        each n in [ 0, 1, 2, 3, 4 ]
+          .flip
+            .pai
+            input(name="baopai")
+
+    ul.log
+      li 
+        span.name 概要
+        a.minus -
+        a.plus +
+
+    .button
+      a.save(title="保存 (S)" accesskey="s")
+        img(src="img/icon-save-floppy.png")
+        | 保存
+      |
+      |
+      a.replay(title="回放 (R)" accesskey="r")
+        img(src="img/icon-play.png")
+        | 回放
+      |
+      |
+      a.exit(title="结束编辑")
+        img(src="img/icon-exit.png")
+        | 结束编辑
+
+  .overview
+    textarea(name="title" rows="2" cols="40")
+    hr
+    table
+      tr
+        th 起家
+        th 对局者
+        th 得分
+        th 点数
+      each n in [ 0, 1, 2, 3 ]
+        tr
+          td.qijia
+            input(type="radio" name="qijia" value=n)
+          td.player
+            textarea(name="player" rows="2" cols="24")
+          td.defen
+            input(name="defen" size="6")
+          td.point
+            input(name="point" size="6")
+
+  each n in [ 0, 1, 2, 3 ]
+    .paipu
+      .player
+        span.jia
+        span.name
+      .defen
+        input(name="defen" size="6")
+        .fenpei
+      .result
+        .text
+        a.button 
+            img(src="img/icon-edit.png")
+            | 和牌/流局
+      .qipai.flip(tabindex="1")
+          .shoupai
+            .pai
+          input(name="qipai")
+      .mo
+        .moda
+          .text
+          .flip
+            .pai
+            input
+      .da
+        .moda
+          .flip
+            .pai
+            input
+          .text
+      .shoupai
+        .bingpai
+        .fulou
+
+  dialog.hule
+    form(method="dialog")
+      label.l
+        | 和牌 
+        select(name="l")
+          option(value="") (流局)
+      label.baojia
+        | 放铳 
+        select(name="baojia" disabled)
+          option(value="") (自摸)
+      label.fubaopai
+        | 里宝牌 
+        .fubaopai
+          .shan
+            each n in [ 0, 1, 2, 3, 4 ]
+              .flip(tabindex="0")
+                .pai
+                input(name="fubaopai")
+      .shoupai
+        .bingpai
+        .fulou
+      input(name="shoupai" type="hidden")
+      ul.hupai
+        li 
+          input(name="hupai")
+          input(name="fanshu" size="2")
+          | 翻
+          input(name="baojia" type="hidden")
+      .defen
+        span.damanguan
+          | 役满
+          input(name="damanguan" size="2")
+        span.normal
+          input(name="fu" size="3")
+          | 符 
+          input(name="fanshu" size="2" disabled)
+          | 翻
+        input(name="defen" size="6")
+        | 点
+      .jicun
+        label
+          img.chouma(src="img/100.gif" alt="本场")
+          | : 
+          input(name="changbang")
+        label
+          img.chouma(src="img/1000.gif" alt="供托")
+          | : 
+          input(name="lizhibang")
+      ul.fenpei
+        each f in ['东','南','西','北']
+          li
+            span= f
+            input(name="fenpei" size="6")
+      .button
+        input(type="button" value="取消").close
+        input(type="button" value="删除").delete
+        .submit
+          input(type="submit" value="确定")
+
+  dialog.pingju
+    form(method="dialog")
+      .hule
+        input(type="button" value="和牌").hule
+      label
+        | 流局理由: 
+        input(name="pingju")
+      ul
+        each f in ['东','南','西','北']
+          li
+            span= f
+            input(name="fenpei" size="6")
+            div
+              input(name="daopai" type="checkbox" value="1")
+              .shoupai
+                .bingpai
+                .fulou
+              input(name="shoupai" type="hidden")
+      .button
+        input(type="button" value="取消").close
+        input(type="button" value="删除").delete
+        .submit
+          input(type="submit" value="确定")

@@ -1,0 +1,102 @@
+- var page = 'hule'
+doctype html
+html(lang="zh-CN")
+  
+  head
+    include ../inc/meta
+
+    include ../inc/ogp
+    +ogp('电脑麻将: 和牌点数计算', '麻将点数计算应用')
+
+    include ../inc/style
+    include ../inc/script
+
+  body.demo
+    include ../inc/loaderr
+    include ../inc/navi
+    include ../inc/loaddata
+    include ../inc/resize
+    .version ver. #{version}
+    
+    form
+      div 牌姿:
+        input(name="paistr" type="text")
+        input(type="submit" value="确定")
+        input(type="reset" value="清空")
+      div
+        span.
+          宝牌指示牌:
+          <input name="baopai" type="text"><input name="baopai" type="text"><input name="baopai" type="text"><input name="baopai" type="text"><input name="baopai" type="text">
+        span.hide.
+          里宝牌指示牌:
+          <input name="fubaopai" type="text"><input name="fubaopai" type="text"><input name="fubaopai" type="text"><input name="fubaopai" type="text"><input name="fubaopai" type="text">
+      div
+        span
+          label
+            input(name="zimo" type="radio" value="1")
+            | 自摸
+          label
+            input(name="zimo" type="radio" value="0" checked)
+            | 荣和
+        span
+          |  场风: 
+          select(name="zhuangfeng")
+            option(value="0" selected) 东
+            option(value="1") 南
+            option(value="2") 西
+            option(value="3") 北
+          |  自风: 
+          select(name="menfeng")
+            option(value="0") 东
+            option(value="1" selected) 南
+            option(value="2") 西
+            option(value="3") 北
+      div
+        span
+          label
+            input(name="lizhi" type="checkbox" value="1")
+            | 立直
+          label
+            input(name="lizhi" type="checkbox" value="2")
+            | 双立直
+        span
+          label
+            input(name="yifa" type="checkbox" value="1" disabled)
+            | 一发
+        span
+          label
+            input(name="haidi" type="checkbox" value="1")
+            | 海底
+          label
+            input(name="lingshang" type="checkbox" value="1")
+            | 嶺上
+          label
+            input(name="qianggang" type="checkbox" value="1")
+            | 槍槓
+        span
+          label
+            input(name="tianhu" type="checkbox" value="2")
+            span 地和
+      div 规则:
+        select(name="rule")
+          option(value="") 电脑麻将规则
+    hr
+    
+    .hule-dialog
+      .hule
+        .shan.baopai
+          span.baopai
+        .shan.fubaopai
+          span.fubaopai
+        
+        .shoupai
+          .bingpai
+          .fulou
+        
+        table.hupai
+          tr.r_hupai
+            td.name
+            td.fanshu
+          tr.r_defen
+            td.defen(colspan="2")
+        

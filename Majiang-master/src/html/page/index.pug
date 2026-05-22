@@ -1,0 +1,25 @@
+- var page = 'index'
+
+doctype html
+html(lang="zh-CN")
+  
+  head
+    include ../inc/meta
+
+    include ../inc/ogp
+    +ogp('电脑麻将', '基于 HTML5 + Javascript 运行的麻将应用', 
+          'https://kobalab.net/majiang/img/game.png')
+
+    include ../inc/style
+    include ../inc/script
+  
+  body.title
+    include ../inc/loaderr
+    include ../inc/navi
+    include ../inc/title
+    include ../inc/loaddata
+
+    include ../inc/file
+    include ../inc/stat
+    include ../inc/board
+    .version ver. #{version}
