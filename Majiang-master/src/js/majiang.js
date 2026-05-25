@@ -9,6 +9,7 @@
 global.Majiang = require('@kobalab/majiang-core');
 global.Majiang.AI = require('@kobalab/majiang-ai');
 global.Majiang.UI = require('@kobalab/majiang-ui');
+require('./qiaoma-ui')(global.Majiang);
 global.Majiang.VERSION = '2.5.1';
 global.jQuery  = require('jquery');
 global.$ = jQuery;

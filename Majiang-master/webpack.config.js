@@ -1,4 +1,5 @@
 const version = require('./package.json').version;
+const path = require('path');
 
 const TerserPlugin = require("terser-webpack-plugin");
 
@@ -19,6 +20,11 @@ module.exports = {
     output: {
         path:     __dirname + '/dist/js/',
         filename: `[name]-${version}.js`
+    },
+    resolve: {
+        alias: {
+            '@kobalab/majiang-core$': path.resolve(__dirname, 'src/js/qiaoma-core.js'),
+        }
     },
     optimization: {
         minimizer: [ new TerserPlugin({extractComments: false}) ],
