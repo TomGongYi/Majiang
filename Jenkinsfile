@@ -99,11 +99,20 @@ pipeline {
                 '''
             }
         }
+        stage('Run Web') {
+            steps {
+                sh '''
+                    cd Majiang-master
+   
+                     nohup npx serve dist -l 8081 > app.log 2>&1 &
+                '''
+             }
+        }
 
         stage('Archive Dist') {
             steps {
+                // archiveArtifacts artifacts: "Majiang-master/dist/**/*", fingerprint: true, allowEmptyArchive: true
                 archiveArtifacts artifacts: "Majiang-master/dist/**/*", fingerprint: true, allowEmptyArchive: true
-                archiveArtifacts artifacts: "dist/**/*", fingerprint: true, allowEmptyArchive: true
             }
         }
     }
