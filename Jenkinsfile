@@ -106,8 +106,18 @@ pipeline {
             steps {
                 sh '''
                     set -eu
-                    export PATH="$NODEJS_BIN:$PATH"
-                    BUILD=0 MODE=serve PORT=8081 sh start.sh restart
+                    export PATH=/var/jenkins_home/tools/jenkins.plugins.nodejs.tools.NodeJSInstallation/node20/bin:$PATH
+
+                    cd Majiang-master
+
+                    pkill -f "http-server dist" || true
+
+                    npm install -g http-server
+
+                    JENKINS_NODE_COOKIE=dontKillMe nohup http-server dist -a 0.0.0.0 -p 8081 > app.log 2>&1 &
+
+                    sleep 2
+                    cat app.log
                 '''
              }
         }
