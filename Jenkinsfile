@@ -19,6 +19,7 @@ pipeline {
     environment {
         REPOSITORY_URL = 'https://github.com/TomGongYi/Majiang.git'
         APP_DIR = 'Majiang-master'
+        NODEJS_BIN = '/var/jenkins_home/tools/jenkins.plugins.nodejs.tools.NodeJSInstallation/node20/bin'
     }
 
     stages {
@@ -44,6 +45,7 @@ pipeline {
             steps {
                 sh '''
                     set -eu
+                    export PATH="$NODEJS_BIN:$PATH"
 
                     # 如果仓库根目录没有 Majiang-master，就自动使用当前目录
                     if [ ! -d "$APP_DIR" ] && [ -f package.json ]; then
@@ -77,6 +79,7 @@ pipeline {
             steps {
                 sh '''
                     set -eu
+                    export PATH="$NODEJS_BIN:$PATH"
 
                     if [ ! -d "$APP_DIR" ] && [ -f package.json ]; then
                         APP_DIR="."
@@ -103,6 +106,7 @@ pipeline {
             steps {
                 sh '''
                     set -eu
+                    export PATH="$NODEJS_BIN:$PATH"
                     BUILD=0 MODE=serve PORT=8081 sh start.sh restart
                 '''
              }
