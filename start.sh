@@ -23,7 +23,7 @@ die() {
 usage() {
     cat <<'EOF'
 Usage:
-  sh start.sh
+  sh start.sh [start|stop|restart|status]
 
 Environment variables:
   PORT=8081                  Host port to expose.
@@ -37,6 +37,7 @@ Environment variables:
 
 Examples:
   sh start.sh
+  sh start.sh restart
   PORT=8090 sh start.sh
   MODE=serve PORT=8081 sh start.sh
   BUILD=0 MODE=docker sh start.sh
@@ -47,6 +48,13 @@ if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ]; then
     usage
     exit 0
 fi
+
+COMMAND="${1:-start}"
+
+case "$COMMAND" in
+    start|stop|restart|status) ;;
+    *) die "COMMAND must be one of: start, stop, restart, status." ;;
+esac
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 
@@ -167,6 +175,25 @@ stop_pid_server() {
     fi
 }
 
+stop_docker_server() {
+    if command -v docker >/dev/null 2>&1 && docker version >/dev/null 2>&1; then
+        docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
+    fi
+}
+
+stop_known_static_servers() {
+    command -v pkill >/dev/null 2>&1 || return 0
+    pkill -f "npx .*serve .*${PORT}" >/dev/null 2>&1 || true
+    pkill -f "serve .*${PORT}" >/dev/null 2>&1 || true
+    pkill -f "python3 -m http.server ${PORT}" >/dev/null 2>&1 || true
+}
+
+stop_all_servers() {
+    stop_pid_server
+    stop_known_static_servers
+    stop_docker_server
+}
+
 start_with_serve() {
     command -v npx >/dev/null 2>&1 || return 1
     stop_pid_server
@@ -199,34 +226,70 @@ start_with_python() {
     log "Log file: $LOG_FILE"
 }
 
-case "$MODE" in
-    docker)
-        start_with_docker || die "Docker is unavailable. Check docker command and daemon access."
-        ;;
-    serve)
-        build_project
-        check_dist
-        start_with_serve || die "npx is unavailable. Install node/npm or use MODE=docker."
-        ;;
-    python)
-        build_project
-        check_dist
-        start_with_python || die "python3 is unavailable."
-        ;;
-    auto)
-        if start_with_docker; then
-            exit 0
+show_status() {
+    if [ -f "$PID_FILE" ]; then
+        old_pid=$(cat "$PID_FILE" 2>/dev/null || true)
+        if [ -n "$old_pid" ] && kill -0 "$old_pid" >/dev/null 2>&1; then
+            log "PID server is running: ${old_pid}"
+            return
         fi
-        log "Docker is unavailable; trying npx serve fallback..."
-        build_project
-        check_dist
-        if start_with_serve; then
-            exit 0
-        fi
-        log "npx serve is unavailable; trying python3 fallback..."
-        if start_with_python; then
-            exit 0
-        fi
-        die "No supported runtime found. Install Docker, Node/npm, or Python 3."
+    fi
+
+    if command -v docker >/dev/null 2>&1 && docker version >/dev/null 2>&1; then
+        docker ps --filter "name=^/${CONTAINER_NAME}$" --format 'Docker container is running: {{.Names}}'
+        return
+    fi
+
+    log "No server status found."
+}
+
+start_app() {
+    case "$MODE" in
+        docker)
+            start_with_docker || die "Docker is unavailable. Check docker command and daemon access."
+            ;;
+        serve)
+            build_project
+            check_dist
+            start_with_serve || die "npx is unavailable. Install node/npm or use MODE=docker."
+            ;;
+        python)
+            build_project
+            check_dist
+            start_with_python || die "python3 is unavailable."
+            ;;
+        auto)
+            if start_with_docker; then
+                return
+            fi
+            log "Docker is unavailable; trying npx serve fallback..."
+            build_project
+            check_dist
+            if start_with_serve; then
+                return
+            fi
+            log "npx serve is unavailable; trying python3 fallback..."
+            if start_with_python; then
+                return
+            fi
+            die "No supported runtime found. Install Docker, Node/npm, or Python 3."
+            ;;
+    esac
+}
+
+case "$COMMAND" in
+    start)
+        start_app
+        ;;
+    stop)
+        stop_all_servers
+        log "Stopped Majiang server if it was running."
+        ;;
+    restart)
+        stop_all_servers
+        start_app
+        ;;
+    status)
+        show_status
         ;;
 esac

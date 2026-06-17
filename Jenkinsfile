@@ -102,9 +102,8 @@ pipeline {
         stage('Run Web') {
             steps {
                 sh '''
-                    cd Majiang-master
-   
-                     nohup npx serve dist -l 8081 -H 0.0.0.0 > app.log 2>&1 &
+                    set -eu
+                    BUILD=0 MODE=serve PORT=8081 sh start.sh restart
                 '''
              }
         }
