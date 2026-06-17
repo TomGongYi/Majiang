@@ -104,7 +104,7 @@ pipeline {
                 sh '''
                     cd Majiang-master
    
-                     nohup npx serve dist -l 8081 > app.log 2>&1 &
+                     nohup npx serve dist -l 8081 -H 0.0.0.0 > app.log 2>&1 &
                 '''
              }
         }
